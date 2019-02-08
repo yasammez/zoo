@@ -1,0 +1,10 @@
+[package]
+name = "zoo"
+version = "0.1.0"
+authors = ["liv"]
+edition = "2018"
+
+[dependencies]
+libc = "0.2"
+ring = "0.14.5"
+base64 = "0.10.1"
