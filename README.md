@@ -26,6 +26,8 @@ so be careful. Recognized commands are
 
 ## Examples
 
+### Tmux Statusline
+
 Personally, I use zoo to provide my tmux statusline with a count of unread emails from various accounts. To this end, here are a couple
 helper scripts, written in [fish](https://fishshell.com/) (if that doesn't tickle your fancy, they should be easy to convert to something
 more POSIXy.
@@ -67,3 +69,28 @@ a section `#(cat ~/.local/share/mailcount)` in my tmuxline preset.
 **Result**
 
 ![Screenshot](https://github.com/yasammez/zoo/raw/master/doc/example.png "Screenshot")
+
+### Git Credentials
+
+You can use zoo as your git credential store as well. For this I configured my git with
+
+```fish
+git config --global credential.helper '!fish -c "git-credential-zoo $0"'
+```
+
+which makes use of the following function:
+
+```fish
+function git-credential-zoo
+        if [ $argv[4] != "get" ]
+                return
+        end
+        while read line
+                set kv (string split "=" $line)
+                if [ $kv[1] = "username" ]
+                        set pass (getpass $kv[2]); or return 1
+                        echo "password=$pass"
+                end
+        end
+end
+```
