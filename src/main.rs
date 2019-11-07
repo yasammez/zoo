@@ -11,5 +11,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let passwort = pwd::prompt_password("Passwort: ")?;
     let mut cmd = cmd::Cmd::new(passwort)?;
     daemon::daemonize()?;
-    cmd.run()
+    let rt = tokio::runtime::Runtime::new()?;
+    rt.block_on(async {
+        cmd.run().await
+    })
 }

@@ -14,7 +14,7 @@ pub struct Vault {
 }
 
 impl Vault {
-    pub fn new(passwort: String) -> Result<Vault, Box<Error>> {
+    pub fn new(passwort: String) -> Result<Vault, Box<dyn Error>> {
         let datei = OpenOptions::new()
             .read(true)
             .write(true)

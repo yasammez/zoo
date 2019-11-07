@@ -72,7 +72,7 @@ impl Error for CryptError {
         "CryptError: ist das Passwort korrekt?"
     }
 
-    fn cause(&self) -> Option<&Error> {
+    fn cause(&self) -> Option<&dyn Error> {
         None
     }
 }

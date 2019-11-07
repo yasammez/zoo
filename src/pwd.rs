@@ -1,5 +1,6 @@
 use libc::{c_int, isatty, tcgetattr, tcsetattr, ECHO, ECHONL, STDIN_FILENO, TCSANOW};
 use std::io::{self, Write};
+use std::mem::{MaybeUninit};
 
 /// Prompts for a password on STDOUT and reads it from STDIN
 pub fn prompt_password(prompt: &str) -> std::io::Result<String> {
@@ -17,8 +18,8 @@ pub fn read_password() -> ::std::io::Result<String> {
     let input_is_tty = unsafe { isatty(tty_fd) } == 1;
 
     if input_is_tty {
-        let mut term = unsafe { ::std::mem::uninitialized() };
-        let mut term_orig = unsafe { ::std::mem::uninitialized() };
+        let mut term = unsafe { MaybeUninit::uninit().assume_init() };
+        let mut term_orig = unsafe { MaybeUninit::uninit().assume_init() };
         io_result(unsafe { tcgetattr(STDIN_FILENO, &mut term) })?;
         io_result(unsafe { tcgetattr(STDIN_FILENO, &mut term_orig) })?;
 
